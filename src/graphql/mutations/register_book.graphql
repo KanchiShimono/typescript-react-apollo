@@ -1,0 +1,6 @@
+mutation RegisterBook($title: ID!, $author: String!) {
+  registerBook(title: $title, author: $author) {
+    title
+    author
+  }
+}

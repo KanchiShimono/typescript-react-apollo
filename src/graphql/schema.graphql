@@ -1,0 +1,19 @@
+type Book {
+  title: ID!
+  author: String!
+}
+
+type Query {
+  books: [Book]
+  book(title: ID!): Book
+}
+
+type Mutation {
+  registerBook(title: ID!, author: String!): Book
+  deleteBook(title: ID!): Book
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}

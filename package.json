@@ -4,6 +4,12 @@
   "description": "Boilerplate for graphql application with TypeScript and React",
   "main": "dist/index.js",
   "scripts": {
+    "dev-server": "ts-node src/server/index.ts -p tsconfig.server.json",
+    "dev-client": "webpack-dev-server --open --mode development",
+    "generate-schema": "graphql-codegen --config codegen.yaml",
+    "migrate-generate": "ts-node ./node_modules/.bin/typeorm migration:generate -n Initialize",
+    "migrate-up": "ts-node ./node_modules/.bin/typeorm migration:run",
+    "migrate-down": "ts-node ./node_modules/.bin/typeorm migration:revert",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

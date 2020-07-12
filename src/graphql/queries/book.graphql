@@ -1,0 +1,6 @@
+query Book($title: ID!) {
+  book(title: $title) {
+    title
+    author
+  }
+}
