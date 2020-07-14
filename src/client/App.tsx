@@ -8,9 +8,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Delete } from '@material-ui/icons';
-import React from 'react';
-import { useBooksQuery, useDeleteBookMutation } from './generated/client-api';
+import TextField from '@material-ui/core/TextField';
+import { Add, Delete } from '@material-ui/icons';
+import React, { useState } from 'react';
+import {
+  useBooksQuery,
+  useDeleteBookMutation,
+  useRegisterBookMutation,
+} from './generated/client-api';
 
 const useStyles = makeStyles({
   table: {
@@ -28,6 +33,12 @@ const App: React.FC = () => {
     onCompleted: () => refetch(),
   });
 
+  const initialState = { title: '', author: '' };
+  const [newBook, setNewBook] = useState(initialState);
+  const [registerBook] = useRegisterBookMutation({
+    onCompleted: () => refetch(),
+  });
+
   if (loading) {
     return <CircularProgress />;
   }
@@ -41,6 +52,13 @@ const App: React.FC = () => {
       return;
     }
     const result = await deleteBook({ variables: { title } });
+    console.log(result);
+  };
+
+  const handleRegister = async (book: { title: string; author: string }) => {
+    if (!book.title) throw new Error('title is empty');
+    if (!book.author) throw new Error('author is empty');
+    const result = await registerBook({ variables: { ...book } });
     console.log(result);
   };
 
@@ -76,6 +94,50 @@ const App: React.FC = () => {
               </TableRow>
             );
           })}
+          <TableRow key="new">
+            <TableCell component="th" scope="row">
+              <TextField
+                required
+                label="title"
+                value={newBook.title}
+                onChange={(e) => {
+                  e.preventDefault();
+                  setNewBook({
+                    ...newBook,
+                    title: e.target.value,
+                  });
+                }}
+              />
+            </TableCell>
+            <TableCell component="th" scope="row">
+              <TextField
+                required
+                label="author"
+                value={newBook.author}
+                onChange={(e) => {
+                  e.preventDefault();
+                  setNewBook({
+                    ...newBook,
+                    author: e.target.value,
+                  });
+                }}
+              />
+            </TableCell>
+            <TableCell>
+              <IconButton
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleRegister(newBook).then(
+                    () => setNewBook(initialState),
+                    (reject) => console.error(reject)
+                  );
+                }}
+                color="primary"
+              >
+                <Add />
+              </IconButton>
+            </TableCell>
+          </TableRow>
         </TableBody>
       </Table>
     </TableContainer>
