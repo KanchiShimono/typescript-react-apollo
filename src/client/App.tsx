@@ -1,4 +1,5 @@
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,6 +12,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
 import { Add, Delete } from '@material-ui/icons';
 import React, { useState } from 'react';
+import Header from './components/header';
 import {
   useBooksQuery,
   useDeleteBookMutation,
@@ -63,84 +65,91 @@ const App: React.FC = () => {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Title</TableCell>
-            <TableCell>Author</TableCell>
-            <TableCell>Action</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data?.books?.map((book) => {
-            return (
-              <TableRow key={book?.title}>
+    <Grid container justify="center">
+      <Grid container item xs={12}>
+        <Header onRefreshClick={() => refetch()} />
+      </Grid>
+      <Grid container item xs={12}>
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Title</TableCell>
+                <TableCell>Author</TableCell>
+                <TableCell>Action</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data?.books?.map((book) => {
+                return (
+                  <TableRow key={book?.title}>
+                    <TableCell component="th" scope="row">
+                      {book?.title}
+                    </TableCell>
+                    <TableCell>{book?.author}</TableCell>
+                    <TableCell>
+                      <IconButton
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleDelete(book?.title);
+                        }}
+                        color="secondary"
+                      >
+                        <Delete />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+              <TableRow key="new">
                 <TableCell component="th" scope="row">
-                  {book?.title}
+                  <TextField
+                    required
+                    label="title"
+                    value={newBook.title}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      setNewBook({
+                        ...newBook,
+                        title: e.target.value,
+                      });
+                    }}
+                  />
                 </TableCell>
-                <TableCell>{book?.author}</TableCell>
+                <TableCell component="th" scope="row">
+                  <TextField
+                    required
+                    label="author"
+                    value={newBook.author}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      setNewBook({
+                        ...newBook,
+                        author: e.target.value,
+                      });
+                    }}
+                  />
+                </TableCell>
                 <TableCell>
                   <IconButton
                     onClick={(e) => {
                       e.preventDefault();
-                      handleDelete(book?.title);
+                      handleRegister(newBook).then(
+                        () => setNewBook(initialState),
+                        (reject) => console.error(reject)
+                      );
                     }}
-                    color="secondary"
+                    color="primary"
                   >
-                    <Delete />
+                    <Add />
                   </IconButton>
                 </TableCell>
               </TableRow>
-            );
-          })}
-          <TableRow key="new">
-            <TableCell component="th" scope="row">
-              <TextField
-                required
-                label="title"
-                value={newBook.title}
-                onChange={(e) => {
-                  e.preventDefault();
-                  setNewBook({
-                    ...newBook,
-                    title: e.target.value,
-                  });
-                }}
-              />
-            </TableCell>
-            <TableCell component="th" scope="row">
-              <TextField
-                required
-                label="author"
-                value={newBook.author}
-                onChange={(e) => {
-                  e.preventDefault();
-                  setNewBook({
-                    ...newBook,
-                    author: e.target.value,
-                  });
-                }}
-              />
-            </TableCell>
-            <TableCell>
-              <IconButton
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleRegister(newBook).then(
-                    () => setNewBook(initialState),
-                    (reject) => console.error(reject)
-                  );
-                }}
-                color="primary"
-              >
-                <Add />
-              </IconButton>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Grid>
+    </Grid>
   );
 };
 
