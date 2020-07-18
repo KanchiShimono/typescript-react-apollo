@@ -12,12 +12,12 @@ import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
 import { Add, Delete } from '@material-ui/icons';
 import React, { useState } from 'react';
-import Header from './components/Header';
+import Header from '../components/Header';
 import {
   useBooksQuery,
   useDeleteBookMutation,
   useRegisterBookMutation,
-} from './generated/client-api';
+} from '../generated/client-api';
 
 const useStyles = makeStyles({
   table: {
