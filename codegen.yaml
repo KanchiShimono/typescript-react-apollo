@@ -12,6 +12,7 @@ generates:
       - typescript-typedefs.js
     config:
       useIndexSignature: true
+      contextType: ../context#Context
   ./src/client/generated/client-api.tsx:
     plugins:
       - typescript
