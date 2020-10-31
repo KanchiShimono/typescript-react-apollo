@@ -10,6 +10,8 @@
     "migrate-generate": "ts-node ./node_modules/.bin/typeorm migration:generate -n Initialize",
     "migrate-up": "ts-node ./node_modules/.bin/typeorm migration:run",
     "migrate-down": "ts-node ./node_modules/.bin/typeorm migration:revert",
+    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
+    "format": "prettier --write --ignore-path .eslintignore 'src/**/*.{js,jsx,ts,tsx}'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -40,7 +42,6 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.21.2",
     "eslint-plugin-jsx-a11y": "^6.3.0",
-    "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^4.0.5",
     "prettier": "^2.0.5",
